@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .cart-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        .cart-item img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+        }
+
+        .cart-item .details {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .remove-btn {
+            background-color: crimson;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .remove-btn:hover {
+            background-color: darkred;
+        }
+
+        .total-price {
+            font-size: 20px;
+            font-weight: bold;
+            padding: 20px;
+            text-align: right;
+            border-top: 2px solid #333;
+            margin: 0 20px;
+        }
+
+        .buy-now-container {
+            text-align: right;
+            padding: 0 20px 30px;
+        }
+
+        .buy-now-btn {
+            background-color: #28a745;
+            color: white;
+            font-size: 18px;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .buy-now-btn:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1 style="text-align: center;">Your Cart Items</h1>
+    <div class="cart-container" id="cartContainer"></div>
+    <div class="total-price" id="totalPrice">Total: ₹0</div>
+    <div class="buy-now-container">
+        <button class="buy-now-btn" onclick="buyNow()">Buy Now</button>
+    </div>
+
+    <script>
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        const container = document.getElementById('cartContainer');
+        const totalPriceEl = document.getElementById('totalPrice');
+
+        function renderCart() {
+            container.innerHTML = "";
+
+            if (cart.length === 0) {
+                container.innerHTML = "<p>Your cart is empty.</p>";
+                totalPriceEl.textContent = "Total: ₹0";
+                return;
+            }
+
+            let total = 0;
+
+            cart.forEach((product, index) => {
+                total += Number(product.price);
+
+                const item = document.createElement('div');
+                item.classList.add('cart-item');
+                item.innerHTML = `
+                    <img src="${product.img}" alt="${product.title}">
+                    <div class="details">
+                        <h3>${product.title}</h3>
+                        <p>Brand: ${product.brand}</p>
+                        <p>Price: ₹${product.price}</p>
+                    </div>
+                    <button class="remove-btn" data-index="${index}">Remove</button>
+                `;
+                container.appendChild(item);
+            });
+
+            totalPriceEl.textContent = `Total: ₹${total}`;
+
+            document.querySelectorAll('.remove-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const index = e.target.getAttribute('data-index');
+                    cart.splice(index, 1);
+                    localStorage.setItem('cart', JSON.stringify(cart));
+                    renderCart();
+                });
+            });
+        }
+
+        function buyNow() {
+            if (cart.length === 0) {
+                alert("Cart is empty. Add some items first!");
+            } else {
+                alert("Thank you for your purchase!\n(This is a test. You can connect Razorpay or any payment gateway here.)");
+                localStorage.removeItem('cart');
+                location.reload();
+            }
+        }
+
+        renderCart();
+    </script>
+
+</body>
+
+</html>

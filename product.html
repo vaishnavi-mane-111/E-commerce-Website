@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Product Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        
+        a {
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        
+        .product-container {
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+        }
+        
+        .product-image {
+            max-width: 400px;
+            height: 400px;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+        
+        .product-info {
+            max-width: 500px;
+        }
+        
+        .product-info h2 {
+            margin-top: 0;
+        }
+        
+        .price {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 10px 0;
+            color: #d32f2f;
+        }
+        
+        .rating {
+            color: #388e3c;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        
+        .button-container {
+            margin-top: 20px;
+        }
+        
+        button {
+            padding: 12px 25px;
+            margin-right: 15px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+        }
+        
+        .add-to-cart {
+            background-color: #fb641b;
+            color: white;
+        }
+        
+        .buy-now {
+            background-color: #0caa4b;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+    <a href="../index.html">← Back to Home</a>
+
+    <div id="product-details">
+        <h2>Loading product...</h2>
+    </div>
+
+    <script>
+        const products = [{
+            id: "1",
+            name: "Floral Print Shirt",
+            imageUrl: "img/products/f1.jpg",
+            price: 599,
+            description: "Stylish and comfortable Floral Print shirt for a trendy look.",
+        }, {
+            id: "2",
+            name: "Men's Printed Shirt",
+            imageUrl: "img/products/f2.jpg",
+            price: 499,
+            description: "Good and Comfortable For a Holiday Look",
+        }, {
+            id: "3",
+            name: "men's Vintage Floral Print Holiday Shirt",
+            imageUrl: "img/products/f3.jpg",
+            price: 799,
+            description: "Comfortable and Stylish For a Holiday Look",
+        }, {
+            id: "4",
+            name: "Men's Printed White,Pink Shirt",
+            imageUrl: "img/products/f4.jpg",
+            price: 366,
+            description: "Casual and Comfortable For Summer Days",
+        }, {
+            id: "5",
+            name: "Tropical Printed Shirt For Men",
+            imageUrl: "img/products/f5.jpg",
+            price: 399,
+            description: "Stylish and comfortable Printed shirt for a trendy look.",
+        }, {
+            id: "6",
+            name: "Juuyy Men's Fashion Collision Color Stitching Shirt",
+            imageUrl: "img/products/f6.jpg",
+            price: 1999,
+            description: "Stylish and comfortable collision Color Stitching shirt for a trendy look.",
+        }, {
+            id: "7",
+            name: "ANNA GARDEN New Loose Casual Pant",
+            imageUrl: "img/products/f7.jpg",
+            price: 1299,
+            description: "Stylish and comfortable Loose Casual Pant For Women",
+        }, {
+            id: "8",
+            name: "Rayon Light Purple Fabric Printed Shirt For a Women",
+            imageUrl: "img/products/f8.jpg",
+            price: 1099,
+            description: "Stylish and comfortable For a Women",
+        }, ];
+
+        const params = new URLSearchParams(window.location.search);
+        const productId = params.get("id");
+
+        const product = products.find((p) => p.id === productId);
+        const productDiv = document.getElementById("product-details");
+
+        if (product) {
+            productDiv.innerHTML = `
+    <div class="product-container">
+      <img class="product-image" src="../${product.imageUrl}" alt="${product.name}" />
+      <div class="product-info">
+        <h2>${product.name}</h2>
+        <div class="price">₹${product.price}</div>
+        ${
+          product.rating
+            ? `<div class="rating">⭐⭐⭐⭐⭐ ${product.rating} / 5 (${product.reviews?.toLocaleString()} reviews)</div>`
+            : ""
+        }
+        <p>${product.description}</p>
+        <div class="button-container">
+          <button class="add-to-cart" onclick="alert('Added to cart!')">🛒 Add to Cart</button>
+          <button class="buy-now" onclick="alert('Proceeding to buy!')">⚡ Buy Now</button>
+        </div>
+      </div>
+    </div>
+  `;
+} else {
+  productDiv.innerHTML = "<p>Product not found.</p>";
+}
+    </script>
+
+</body>
+
+</html>
